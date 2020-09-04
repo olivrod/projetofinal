@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="with-device-width, initial-scale-1.0">
+        <title>Link Crash Itaú - Dashboard</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <script type="text/javascript" src="js/script.js"></script>
+    </head>
+    <body onload="exibirUsuario();carregarSolicitacoes('exibir','todas');">
+        <br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="card">
+                        <h5 class="card-header"><img class="rounded-circle" src="img/itau.png" width="80px">Link Crash Itaú</h5>
+                        <div class="card-body">
+                            <table border="0" width="100%" cellspacing="0" cellpading="0">
+                                <tr>
+                                    <td width="10%">
+                                        <div id="foto"></div>
+                                    </td>
+                                    <td width="55%">
+                                        <div id="dados"></div>
+                                    </td>
+                                    <td>
+                                        <button type="button" id="btnImprimir" class="btn btn-primary" onclick="imprimirDashboard('solicitacoes');">Imprimir <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-printer" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M11 2H5a1 1 0 0 0-1 1v2H3V3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h-1V3a1 1 0 0 0-1-1zm3 4H2a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h1v1H2a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-1h1a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1z"></path>
+                                            <path fill-rule="evenodd" d="M11 9H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zM5 8a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H5z"></path>
+                                            <path d="M3 7.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"></path>
+                                          </svg></button>
+                                        <button type="button" id="btnExportar" class="btn btn-primary" onclick="exportar();">Exportar CSV <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-download" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"></path>
+                                            <path fill-rule="evenodd" d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"></path>
+                                          </svg></button>
+                                    </td>
+                                    <td width="10%" style="text-align: right;">
+                                        <input type="button" class="btn btn-secondary" onclick="logout()" value="Logout">
+                                    </td>
+                                </tr>
+                            </table>       
+                            <br>
+                            <table border="0" width="50%" cellspacing="0" cellpading="0">
+                                <tr>
+                                    <td width="100%">
+                                        <form class="form-signin">
+                                            <div class="form-group">
+                                                Status:
+                                                <select id="cmbstatus" style="width: 200px;" onchange="carregarSolicitacoes('exibir',document.getElementById('cmbstatus').value)" class="form-control" name="cmbstatus">
+                                                    <option selected value="todas">Filtrar...</option>
+                                                    <option value="inicial">Inicial</option>
+                                                    <option value="aprovada">Aprovada</option>
+                                                    <option value="negada">Negada</option>
+                                                    <option value="cancelada">Cancelada</option>
+                                                    <option value="todas">Todas</option>
+                                                </select>
+                                            </div>   
+                                        </form>  
+                                    </td>
+                                </tr>
+                            </table>
+                            <br>
+                            <div id="solicitacoes"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    </body>
+</html>
